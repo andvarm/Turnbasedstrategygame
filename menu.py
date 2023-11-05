@@ -17,6 +17,7 @@ def save_user_name(value):
     print(user_name)
 
 def save_user_country(index, value):
+    """Save which country is selected in a variable"""
     global user_country
     user_country = value
     print(value)
