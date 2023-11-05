@@ -1,0 +1,7 @@
+Write the current amount of money top left.
+Start money depends on difficulty.
+Garrisons is a class.
+Starting cities added.
+Starting money added.
+Starting Garrison added.
+Writes name of the Ruler in bottom left corner.
