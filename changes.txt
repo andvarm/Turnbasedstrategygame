@@ -1,2 +1,3 @@
 Write the current amount of money top left.
 Start money depends on difficulty.
+Garrisons is a class.
