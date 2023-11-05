@@ -54,6 +54,13 @@ class Buildings:
 
     def get_building_count(self, building_type):
         return self.buildings.get(building_type, 0)
+    
+    def get_total_buildings(self):
+        total = 0
+        for count in self.buildings.values():
+            total += count
+        print(f"{self.buildings.keys()} : {self.buildings.values()}")
+        return total
 
 class Resources:
     def __init__(self):
@@ -124,21 +131,41 @@ def message(msg, color):
 
 def display_economy(msg):
     """Displays current money"""
-    msg = str(msg) + " Gold"
+    msg = str(msg)
 
     mesg = font_style.render(msg, True, black)
     screen.blit(mesg, [5, 0])
+
+def display_ruler(ruler):
+    msg = str(ruler)
+
+    mesg = font_style.render(msg, True, black)
+    screen.blit(mesg, [5, 380])
+
+def initial_buildings():
+    """Creates the initial buildings for user"""
+    global user_buildings
+
+    user_buildings = Buildings()
+
+    if user_buildings.get_total_buildings() < building_capacity:
+        user_buildings.add_buildings("Farm", 2)
+        user_buildings.add_buildings("Barracks", 1)
+        user_buildings.add_buildings("Ore mine", 1)
+
+    print(f"nr of Buildings: {user_buildings.get_total_buildings()}")
 
 def easy():
     """Generates starting resources for easy difficulty"""
     global user_cities
     global user_resources
-    global user_cities
+    global user_buildings
     global food_count
     
     user_garrison1 = Garrison()
     user_resources = Resources()
     user_cities = Cities()
+
 
     user_garrison1.add_unit("Musketmen", 840)
     user_garrison1.add_unit("Spearmen", 600)
@@ -259,13 +286,19 @@ def check_user_country(value):
 
     return country
 
-def window(difficulty, country):
+def window(difficulty, country, ruler):
     """Draws a window"""
-    global money
+    global gold_count
     global user_country
+    global building_capacity
 
     gold_count = check_difficulty(difficulty)
     user_country = check_user_country(country)
+
+    """maximum buildings is 6 per city"""
+    building_capacity = 6 * user_cities.get_city_count()
+
+    initial_buildings()
 
     resources = str(gold_count) + " Gold | " + str(food_count) + " Food |"
 
@@ -277,6 +310,7 @@ def window(difficulty, country):
     screen.blit(BackGround.image, BackGround.rect)
     message("Press 'q' to quit", white)
     display_economy(resources)
+    display_ruler(ruler)
 
     pygame.display.flip()
 

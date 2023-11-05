@@ -6,7 +6,7 @@ import pygame_menu
 """Initiates pygame"""
 pygame.init()
 
-user_name = None
+user_name = "Karl XII"
 game_difficulty = 3
 user_country  = 1
 
@@ -33,7 +33,7 @@ def set_difficulty(value, difficulty):
 def start_the_game():
     """Starts the game"""
     print("Game starts with difficulty: ", game_difficulty)
-    game.window(game_difficulty, user_country)
+    game.window(game_difficulty, user_country, user_name)
     pass
 
 def menu():
@@ -43,7 +43,7 @@ def menu():
     menu = pygame_menu.Menu('Imperium Aureum', 600, 400,
     theme=pygame_menu.themes.THEME_BLUE)
 
-    menu.add.text_input('Name: ', default='Karl XII', onchange=save_user_name)
+    menu.add.text_input('Ruler Name: ', default='Karl XII', onchange=save_user_name)
     menu.add.selector('Country: ', [('Sweden', 1), ('Denmark', 2), ('Rome', 3)], onchange=save_user_country)
     menu.add.selector('Difficulty: ', [('Hard', 3), ('Medium', 2), ('Easy', 1)], onchange=set_difficulty)
     menu.add.button('Play', start_the_game)
