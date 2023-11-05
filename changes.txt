@@ -1,0 +1,2 @@
+Write the current amount of money top left.
+Start money depends on difficulty.

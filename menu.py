@@ -3,22 +3,34 @@ import game
 import pygame
 import pygame_menu
 
+"""Initiates pygame"""
 pygame.init()
 
+user_name = None
+game_difficulty = 3
+
 def save_user_name(value):
+    """Saves username in variable"""
     global user_name
     user_name = value
     print(user_name)
 
 def set_difficulty(value, difficulty):
-    print(difficulty)
+    """Saves difficulty"""
+    """3 is hard, 2 is medium and 1 is easy"""
+    global game_difficulty
+    game_difficulty = difficulty
+    print("Game difficulty changed to: ", game_difficulty)
     pass
 
 def start_the_game():
-    game.window()
+    """Starts the game"""
+    print("Game starts with difficulty: ", game_difficulty)
+    game.window(game_difficulty)
     pass
 
 def menu():
+    """Menu"""
     surface = pygame.display.set_mode((600, 400))
 
     menu = pygame_menu.Menu('Imperium Aureum', 600, 400,
