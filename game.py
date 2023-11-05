@@ -29,8 +29,8 @@ class Background(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.left, self.rect.top = location
 
-"""Make it possible to draw an message on screen"""
 def message(msg, color):
+    """Make it possible to draw an message on screen"""
     mesg = font_style.render(msg, True, color)
     screen.blit(mesg, [width / 6, height / 3])
 
@@ -79,7 +79,7 @@ def window(difficulty):
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_q:
-                        print("goodbye")
+                        print("q was pressed")
                         running = False
 
             if event.type == pygame.QUIT:
