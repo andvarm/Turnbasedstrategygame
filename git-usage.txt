@@ -1,0 +1,29 @@
+
+## Basic instruction for creating a new branch
+
+$ git checkout develop && git pull
+
+# Feature branch
+$ git checkout -b feature/music-player
+Växlade till en ny gren "feature/music-player"
+$ git push -u origin feature/music-player
+A
+
+# Bug branch
+$ git checkout -b bug/problem-in-music-player
+$ git push -u origin bug/problem-in-music-player
+
+## Create a new commit
+
+$ git status
+<check what files to add and add them>
+$ git add <filename1> <filename2> ... <filenameN>
+
+< or all >
+$ git add .  
+
+## Add commit & push
+
+$ git commit -m "Commit message explaining why change is done"
+$ git push
+
