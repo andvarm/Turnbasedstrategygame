@@ -7,6 +7,9 @@ pygame.init()
 """Set width and height"""
 (width, height) = (600, 400)
 
+"""Starting index for music"""
+music_index = -1
+
 """Colors"""
 white = (255, 255, 255)
 yellow = (255, 255, 102)
@@ -72,7 +75,7 @@ class Resources:
         else:
             self.resources[resource_type] = count
 
-    def remove_unit(self, resource_type, count):
+    def remove_resource(self, resource_type, count):
         if resource_type in self.resources:
             self.resources[resource_type] = max(0, self.resources[resource_type] - count)
             if self.resources[resource_type] == 0:
@@ -114,7 +117,8 @@ class Garrison:
 screen = pygame.display.set_mode((width, height))
 
 """Define font styles"""
-font_style = pygame.font.SysFont("bahnschrift", 25)
+font_style = pygame.font.SysFont("Times New Roman", 25)
+font_style_large = pygame.font.SysFont("Times New Roman", 25)
 
 """Make it possible to draw an image as background"""
 class Background(pygame.sprite.Sprite):
@@ -133,14 +137,15 @@ def display_economy(msg):
     """Displays current money"""
     msg = str(msg)
 
-    mesg = font_style.render(msg, True, black)
-    screen.blit(mesg, [5, 0])
+    mesg_larger = font_style_large.render(msg, True, black)
+
+    screen.blit(mesg_larger, [5, 5])
 
 def display_ruler(ruler):
     msg = str(ruler)
 
     mesg = font_style.render(msg, True, black)
-    screen.blit(mesg, [5, 380])
+    screen.blit(mesg, [5, 370])
 
 def initial_buildings():
     """Creates the initial buildings for user"""
@@ -266,7 +271,7 @@ def check_difficulty(difficulty):
     print("Starting resources set")
     return gold_count
 
-def check_user_country(value):
+def init_user_country(value):
     country = ""
 
     if value == 1:
@@ -284,29 +289,77 @@ def check_user_country(value):
         user_cities.add_cities("Rome")
         print(f"Number of cities{user_cities.get_city_count()}")
 
+def check_user_country(value):
+    country = ""
+
+    if value == 1:
+        country = "Sweden"
+
+    elif value == 2:
+        country = "Denmark"
+
+    elif value == 3:
+        country = "Rome"
+
     return country
 
-def window(difficulty, country, ruler):
+def ruler_picture(country):
+    if country == "Sweden":
+        background = 'data/pictures/karlxii600x400.jpg'
+
+    elif country == "Denmark":
+        background = 'data/pictures/christianVII600x400.jpg'
+
+    elif country == "Rome":
+        background = 'data/pictures/alexander_great600x400.jpg'
+
+    return background
+
+def music_play(volume):
+    """Music player"""
+    global music_index
+
+    music_files = ["data/music/IntheHalloftheMountainKing.mp3", "data/music/Carmen_Act_1.mp3"]
+    
+    music_index += 1
+
+    if music_index >= len(music_files):
+        music_index = 0
+    
+    pygame.mixer.music.load(music_files[music_index])
+    pygame.mixer.music.set_volume(volume)
+    print(f"Volume set to: {volume}")
+
+    pygame.mixer.music.play()
+    print("Music is playing.")
+    print("Volume is set to: " + str(pygame.mixer.music.get_volume()))
+    print(f"Music is playing ={pygame.mixer.music.get_busy()}")
+
+def window(difficulty, country, ruler, volume):
     """Draws a window"""
     global gold_count
     global user_country
     global building_capacity
 
     gold_count = check_difficulty(difficulty)
+    init_user_country(country)
+    
     user_country = check_user_country(country)
 
     """maximum buildings is 6 per city"""
     building_capacity = 6 * user_cities.get_city_count()
 
     initial_buildings()
+    music_play(volume)
+
 
     resources = str(gold_count) + " Gold | " + str(food_count) + " Food |"
 
     pygame.display.set_caption('Imperium Aureum')
 
-    BackGround = Background('data/pictures/karlxii.jpg', [0,0])
+    BackGround = Background(ruler_picture(user_country), [0,0])
 
-    screen.fill([255, 255, 255])
+    screen.fill(white)
     screen.blit(BackGround.image, BackGround.rect)
     message("Press 'q' to quit", white)
     display_economy(resources)
@@ -317,9 +370,20 @@ def window(difficulty, country, ruler):
     running = True
 
     while running:
+        pygame.display.update()
+
+        music_busy = pygame.mixer.music.get_busy()
+
+        if music_busy == False:
+            music_play(volume)
+            print("Music restarted")
+
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_q:
+                        pygame.mixer.music.stop()
+                        pygame.mixer.music.unload()
+                        print(pygame.mixer.music.get_busy())
                         print("q was pressed")
                         running = False
 

@@ -1,7 +1,5 @@
-Write the current amount of money top left.
-Start money depends on difficulty.
-Garrisons is a class.
-Starting cities added.
-Starting money added.
-Starting Garrison added.
-Writes name of the Ruler in bottom left corner.
+Music plays in game.
+background in game changes depending on country.
+Music volume selector added to menu.
+Music plays next song and restarts when playlist ends.
+Changed font to Times New Roman.
