@@ -118,7 +118,8 @@ class Garrison:
 screen = pygame.display.set_mode((width, height))
 
 """Define font styles"""
-font_style = pygame.font.SysFont("bahnschrift", 25)
+font_style = pygame.font.SysFont("Times New Roman", 25)
+font_style_large = pygame.font.SysFont("Times New Roman", 25)
 
 """Make it possible to draw an image as background"""
 class Background(pygame.sprite.Sprite):
@@ -137,14 +138,15 @@ def display_economy(msg):
     """Displays current money"""
     msg = str(msg)
 
-    mesg = font_style.render(msg, True, black)
-    screen.blit(mesg, [5, 0])
+    mesg_larger = font_style_large.render(msg, True, black)
+
+    screen.blit(mesg_larger, [5, 5])
 
 def display_ruler(ruler):
     msg = str(ruler)
 
     mesg = font_style.render(msg, True, black)
-    screen.blit(mesg, [5, 380])
+    screen.blit(mesg, [5, 370])
 
 def initial_buildings():
     """Creates the initial buildings for user"""
@@ -319,7 +321,7 @@ def music_play():
     pygame.mixer.music.load(carmen_bizet)
     pygame.mixer.music.play()
     pygame.mixer.music.queue(carmen_bizet)
-    print(bergakungen + " is playing.")
+    print("Music is playing.")
     print("Volume is set to: " + str(pygame.mixer.music.get_volume()))
     print(pygame.mixer.music.get_busy())
 
@@ -347,7 +349,7 @@ def window(difficulty, country, ruler):
 
     BackGround = Background(ruler_picture(user_country), [0,0])
 
-    screen.fill([255, 255, 255])
+    screen.fill(white)
     screen.blit(BackGround.image, BackGround.rect)
     message("Press 'q' to quit", white)
     display_economy(resources)
@@ -358,6 +360,14 @@ def window(difficulty, country, ruler):
     running = True
 
     while running:
+        pygame.display.update()
+
+        music_busy = pygame.mixer.music.get_busy()
+
+        if music_busy == False:
+            music_play()
+            print("Music restarted")
+
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_q:
