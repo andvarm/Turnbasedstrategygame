@@ -1,0 +1,27 @@
+***game.py***
+--------------------------
+How to work Cities:
+initiate cities: city_group_name = Cities()
+add_cities("City name") # Adds city to ownership.
+remove_city("City_name") # Removes city from ownership.
+get_city_count() # Counts owned cities.
+--------------------------
+How to work Buildings:
+initiate buildings: building_group_name = Buildings()
+add_buildings(building_type, count) # Add buildings.
+remove_building(building_type, count) # Remove buildings.
+get_building_count(building_type) # Counts number of buildings of certain type.
+get_total_buildings() # Counts all buildings.
+--------------------------
+How to work Resources:
+initiate resources: user_resources = Resources
+add_resource(resource_type, count) # Add a type of resource and/or type.
+remove_resource(resource_type, count) # Remove an amount of a specific resource type.
+get_resource_count(resource_type) # Count the amount of a specific resource type
+--------------------------
+How to work Garrisons:
+add_unit(unit_type, count) # Add an amount of a certain unit type.
+remove_unit(unit_type, count) # Remove an amount of a certain unit type.
+get_total_units() # Count current amount of units.
+get_unit_count(unit_type) # Count current amount of a certain unit type.
+--------------------------

@@ -72,7 +72,7 @@ class Resources:
         else:
             self.resources[resource_type] = count
 
-    def remove_unit(self, resource_type, count):
+    def remove_resource(self, resource_type, count):
         if resource_type in self.resources:
             self.resources[resource_type] = max(0, self.resources[resource_type] - count)
             if self.resources[resource_type] == 0:

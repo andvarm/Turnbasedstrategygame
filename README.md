@@ -13,3 +13,6 @@ Resource types:
 food
 money
 ----------------------------
+Unit types:
+Musket men
+Spearmen
