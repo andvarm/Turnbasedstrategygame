@@ -8,7 +8,8 @@ pygame.init()
 (width, height) = (600, 400)
 
 """Music file path"""
-music_filepath = "data/music/IntheHalloftheMountainKing"
+bergakungen = "data/music/IntheHalloftheMountainKing.mp3"
+carmen_bizet = "data/music/Carmen_Act_1.mp3"
 
 """Colors"""
 white = (255, 255, 255)
@@ -269,7 +270,7 @@ def check_difficulty(difficulty):
     print("Starting resources set")
     return gold_count
 
-def check_user_country(value):
+def init_user_country(value):
     country = ""
 
     if value == 1:
@@ -287,7 +288,40 @@ def check_user_country(value):
         user_cities.add_cities("Rome")
         print(f"Number of cities{user_cities.get_city_count()}")
 
+def check_user_country(value):
+    country = ""
+
+    if value == 1:
+        country = "Sweden"
+
+    elif value == 2:
+        country = "Denmark"
+
+    elif value == 3:
+        country = "Rome"
+
     return country
+
+def ruler_picture(country):
+    if country == "Sweden":
+        background = 'data/pictures/karlxii600x400.jpg'
+
+    elif country == "Denmark":
+        background = 'data/pictures/christianVII600x400.jpg'
+
+    elif country == "Rome":
+        background = 'data/pictures/alexander_great600x400.jpg'
+
+    return background
+
+def music_play():
+    pygame.mixer.music.load(bergakungen)
+    pygame.mixer.music.load(carmen_bizet)
+    pygame.mixer.music.play()
+    pygame.mixer.music.queue(carmen_bizet)
+    print(bergakungen + " is playing.")
+    print("Volume is set to: " + str(pygame.mixer.music.get_volume()))
+    print(pygame.mixer.music.get_busy())
 
 def window(difficulty, country, ruler):
     """Draws a window"""
@@ -296,18 +330,22 @@ def window(difficulty, country, ruler):
     global building_capacity
 
     gold_count = check_difficulty(difficulty)
+    init_user_country(country)
+    
     user_country = check_user_country(country)
 
     """maximum buildings is 6 per city"""
     building_capacity = 6 * user_cities.get_city_count()
 
     initial_buildings()
+    music_play()
+
 
     resources = str(gold_count) + " Gold | " + str(food_count) + " Food |"
 
     pygame.display.set_caption('Imperium Aureum')
 
-    BackGround = Background('data/pictures/karlxii.jpg', [0,0])
+    BackGround = Background(ruler_picture(user_country), [0,0])
 
     screen.fill([255, 255, 255])
     screen.blit(BackGround.image, BackGround.rect)
@@ -323,6 +361,9 @@ def window(difficulty, country, ruler):
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_q:
+                        pygame.mixer.music.stop()
+                        pygame.mixer.music.unload()
+                        print(pygame.mixer.music.get_busy())
                         print("q was pressed")
                         running = False
 
