@@ -7,6 +7,9 @@ pygame.init()
 """Set width and height"""
 (width, height) = (600, 400)
 
+"""Music file path"""
+music_filepath = "data/music/IntheHalloftheMountainKing"
+
 """Colors"""
 white = (255, 255, 255)
 yellow = (255, 255, 102)
