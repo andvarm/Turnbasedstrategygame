@@ -1,5 +1,5 @@
 Music plays in game.
 background in game changes depending on country.
 Music volume selector added to menu.
-Music restarts automatically.
+Music plays next song and restarts when playlist ends.
 Changed font to Times New Roman.

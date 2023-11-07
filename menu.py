@@ -49,7 +49,7 @@ def set_difficulty(value, difficulty):
 def start_the_game():
     """Starts the game"""
     print("Game starts with difficulty: ", game_difficulty)
-    game.window(game_difficulty, user_country, user_name)
+    game.window(game_difficulty, user_country, user_name, music_volume)
     pass
 
 def menu():

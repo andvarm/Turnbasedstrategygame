@@ -7,9 +7,8 @@ pygame.init()
 """Set width and height"""
 (width, height) = (600, 400)
 
-"""Music file path"""
-bergakungen = "data/music/IntheHalloftheMountainKing.mp3"
-carmen_bizet = "data/music/Carmen_Act_1.mp3"
+"""Starting index for music"""
+music_index = -1
 
 """Colors"""
 white = (255, 255, 255)
@@ -316,16 +315,27 @@ def ruler_picture(country):
 
     return background
 
-def music_play():
-    pygame.mixer.music.load(bergakungen)
-    pygame.mixer.music.load(carmen_bizet)
+def music_play(volume):
+    """Music player"""
+    global music_index
+
+    music_files = ["data/music/IntheHalloftheMountainKing.mp3", "data/music/Carmen_Act_1.mp3"]
+    
+    music_index += 1
+
+    if music_index >= len(music_files):
+        music_index = 0
+    
+    pygame.mixer.music.load(music_files[music_index])
+    pygame.mixer.music.set_volume(volume)
+    print(f"Volume set to: {volume}")
+
     pygame.mixer.music.play()
-    pygame.mixer.music.queue(carmen_bizet)
     print("Music is playing.")
     print("Volume is set to: " + str(pygame.mixer.music.get_volume()))
-    print(pygame.mixer.music.get_busy())
+    print(f"Music is playing ={pygame.mixer.music.get_busy()}")
 
-def window(difficulty, country, ruler):
+def window(difficulty, country, ruler, volume):
     """Draws a window"""
     global gold_count
     global user_country
@@ -340,7 +350,7 @@ def window(difficulty, country, ruler):
     building_capacity = 6 * user_cities.get_city_count()
 
     initial_buildings()
-    music_play()
+    music_play(volume)
 
 
     resources = str(gold_count) + " Gold | " + str(food_count) + " Food |"
@@ -365,7 +375,7 @@ def window(difficulty, country, ruler):
         music_busy = pygame.mixer.music.get_busy()
 
         if music_busy == False:
-            music_play()
+            music_play(volume)
             print("Music restarted")
 
         for event in pygame.event.get():
