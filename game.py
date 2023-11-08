@@ -1,5 +1,6 @@
 """Contains game"""
 import pygame
+import game_init
 
 """Initialize pygame"""
 pygame.init()
@@ -17,6 +18,53 @@ black = (0, 0, 0)
 red = (213, 50, 80)
 green = (0, 255, 0)
 blue = (50, 153, 213)
+
+objects = []
+
+class Button():
+    def __init__(self, x, y, width, height, buttonText='button', onlclickFunction=None, onePress=False):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.onclickFunction = onlclickFunction
+        self.onePress = onePress
+        self.alreadyPressed = False
+
+        self.fillColors = {
+            'normal' : red,
+            'hover' : '#666666',
+            'pressed' : '#333333',
+        }
+
+        self.buttonSurface = pygame.Surface((self.width, self.height))
+        self.buttonRect = pygame.Rect(self.x, self.y, self.width, self.height)
+
+        self.buttonSurf = font_style.render(buttonText, True, (20, 20, 20))
+
+        objects.append(self)
+
+    def process(self):
+        mousePos = pygame.mouse.get_pos()
+        self.buttonSurface.fill(self.fillColors['normal'])
+        if self.buttonRect.collidepoint(mousePos):
+            self.buttonSurface.fill(self.fillColors['hover'])
+            if pygame.mouse.get_pressed(num_buttons=3)[0]:
+                self.buttonSurface.fill(self.fillColors['pressed'])
+                if self.onePress:
+                    self.onclickFunction()
+                elif not self.alreadyPressed:
+                    self.onclickFunction()
+                    self.alreadyPressed = True
+
+            else:
+                self.alreadyPressed = False
+
+        self.buttonSurface.blit(self.buttonSurf, [
+        self.buttonRect.width/2 - self.buttonSurf.get_rect().width/2,
+        self.buttonRect.height/2 - self.buttonSurf.get_rect().height/2
+        ])
+        screen.blit(self.buttonSurface, self.buttonRect)
 
 class Cities:
     def __init__(self):
@@ -289,31 +337,6 @@ def init_user_country(value):
         user_cities.add_cities("Rome")
         print(f"Number of cities{user_cities.get_city_count()}")
 
-def check_user_country(value):
-    country = ""
-
-    if value == 1:
-        country = "Sweden"
-
-    elif value == 2:
-        country = "Denmark"
-
-    elif value == 3:
-        country = "Rome"
-
-    return country
-
-def ruler_picture(country):
-    if country == "Sweden":
-        background = 'data/pictures/karlxii600x400.jpg'
-
-    elif country == "Denmark":
-        background = 'data/pictures/christianVII600x400.jpg'
-
-    elif country == "Rome":
-        background = 'data/pictures/alexander_great600x400.jpg'
-
-    return background
 
 def music_play(volume):
     """Music player"""
@@ -344,7 +367,7 @@ def window(difficulty, country, ruler, volume):
     gold_count = check_difficulty(difficulty)
     init_user_country(country)
     
-    user_country = check_user_country(country)
+    user_country = game_init.check_user_country(country)
 
     """maximum buildings is 6 per city"""
     building_capacity = 6 * user_cities.get_city_count()
@@ -357,7 +380,9 @@ def window(difficulty, country, ruler, volume):
 
     pygame.display.set_caption('Imperium Aureum')
 
-    BackGround = Background(ruler_picture(user_country), [0,0])
+    BackGround = Background(game_init.ruler_picture(user_country), [0,0])
+
+    Button(495, 325, 100, 40, 'End Turn', game_init.end_turn())
 
     screen.fill(white)
     screen.blit(BackGround.image, BackGround.rect)
@@ -377,6 +402,9 @@ def window(difficulty, country, ruler, volume):
         if music_busy == False:
             music_play(volume)
             print("Music restarted")
+
+        for object in objects:
+            object.process()
 
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
