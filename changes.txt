@@ -1,5 +1,2 @@
-Music plays in game.
-background in game changes depending on country.
-Music volume selector added to menu.
-Music plays next song and restarts when playlist ends.
-Changed font to Times New Roman.
+Added a button in bottom right for ending turn.
+moved some functions to game_init.
