@@ -1,6 +1,7 @@
 """Contains game"""
 import pygame
 import game_init
+import world
 
 """Initialize pygame"""
 pygame.init()
@@ -364,6 +365,7 @@ def window(difficulty, country, ruler, volume):
     global user_country
     global building_capacity
 
+
     gold_count = check_difficulty(difficulty)
     init_user_country(country)
     
@@ -380,12 +382,14 @@ def window(difficulty, country, ruler, volume):
 
     pygame.display.set_caption('Imperium Aureum')
 
-    BackGround = Background(game_init.ruler_picture(user_country), [0,0])
+    BackGround = world.GameBoard()
 
     Button(495, 325, 100, 40, 'End Turn', game_init.end_turn())
 
     screen.fill(white)
-    screen.blit(BackGround.image, BackGround.rect)
+    screen.blit(BackGround.main(ruler, resources, volume))
+    if BackGround is not None:
+        screen.blit(BackGround, (0, 0))
     message("Press 'q' to quit", white)
     display_economy(resources)
     display_ruler(ruler)
@@ -395,7 +399,6 @@ def window(difficulty, country, ruler, volume):
     running = True
 
     while running:
-        pygame.display.update()
 
         music_busy = pygame.mixer.music.get_busy()
 
@@ -403,8 +406,7 @@ def window(difficulty, country, ruler, volume):
             music_play(volume)
             print("Music restarted")
 
-        for object in objects:
-            object.process()
+        pygame.display.update()
 
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
