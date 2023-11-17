@@ -119,11 +119,12 @@ class GameBoard():
                     done = True  # Flag that we are done so we exit this loop
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_q:
-                        done = True
                         start_game.pygame.mixer.music.stop()
                         start_game.pygame.mixer.music.unload()
                         print(start_game.pygame.mixer.music.get_busy())
                         print("q was pressed")
+                        done = True
+                        exit()
                 elif event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT:
                     # User clicks the mouse. Get the position
                     pos = pygame.mouse.get_pos()
@@ -153,7 +154,6 @@ class GameBoard():
 
         # Be IDLE friendly. If you forget this line, the program will 'hang'
         # on exit.
-        pygame.quit()
 
 if __name__ == "__main__":
     game = GameBoard()

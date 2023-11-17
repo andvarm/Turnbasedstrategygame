@@ -387,9 +387,8 @@ def window(difficulty, country, ruler, volume):
     Button(495, 325, 100, 40, 'End Turn', game_init.end_turn())
 
     screen.fill(white)
-    screen.blit(BackGround.main(ruler, resources, volume))
-    if BackGround is not None:
-        screen.blit(BackGround, (0, 0))
+    BackGround.main(ruler, resources, volume)
+    # screen.blit(BackGround.main(ruler, resources, volume))
     message("Press 'q' to quit", white)
     display_economy(resources)
     display_ruler(ruler)
