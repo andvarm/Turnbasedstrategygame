@@ -2,6 +2,7 @@
 import pygame
 import game_init
 import world
+from game_init import *
 
 """Initialize pygame"""
 pygame.init()
@@ -134,6 +135,7 @@ class Resources:
         return self.resources.get(resource_type, 0)
 
 """Define what a garrison is and how to work with it"""
+"""Musketmen = 20 gold/5 food per turn, spearmen = 10 gold/5 food per turn"""
 class Garrison:
     def __init__(self):
         self.units = {}
@@ -209,119 +211,27 @@ def initial_buildings():
 
     print(f"nr of Buildings: {user_buildings.get_total_buildings()}")
 
-def easy():
-    """Generates starting resources for easy difficulty"""
-    global user_cities
-    global user_resources
-    global user_buildings
-    global food_count
-    
-    user_garrison1 = Garrison()
-    user_resources = Resources()
-    user_cities = Cities()
-
-
-    user_garrison1.add_unit("Musketmen", 840)
-    user_garrison1.add_unit("Spearmen", 600)
-
-    user_resources.add_resource("Food", 1000)
-    user_resources.add_resource("Gold", 1200)
-
-    total_units = user_garrison1.get_total_units()
-    musketmen_count = user_garrison1.get_unit_count("Musketmen")
-    spear_men_count = user_garrison1.get_unit_count("Spearmen")
-
-    food_count = user_resources.get_resource_count("Food")
-    gold_count = user_resources.get_resource_count("Gold")
-    
-    print(f"User food: {food_count}")
-    print(f"User garrison nr. 1: {user_garrison1}")
-    print(f"Spearmen count: {spear_men_count}")
-    print(f"Musketmen count: {musketmen_count}")
-    print(f"Total units in the garrison: {total_units}")
-    
-    return gold_count
-
-def medium():
-    """Generates starting resources for medium difficulty"""
-    global user_cities
-    global user_resources
-    global user_cities
-    global food_count
-    
-    user_garrison1 = Garrison()
-    user_resources = Resources()
-    user_cities = Cities()
-
-    user_garrison1.add_unit("Musketmen", 480)
-
-    user_resources.add_resource("Food", 1000)
-    user_resources.add_resource("Gold", 800)
-    
-    total_units = user_garrison1.get_total_units()
-    musketmen_count = user_garrison1.get_unit_count("Musketmen")
-    spear_men_count = user_garrison1.get_unit_count("Spearmen")
-
-    food_count = user_resources.get_resource_count("Food")
-    gold_count = user_resources.get_resource_count("Gold")
-    
-    print(f"User food: {food_count}")
-    print(f"User garrison nr. 1: {user_garrison1}")
-    print(f"Spearmen count: {spear_men_count}")
-    print(f"Musketmen count: {musketmen_count}")
-    print(f"Total units in the garrison: {total_units}")
-
-    return gold_count
-
-def hard():
-    """Generates starting resources for hard difficulty"""
-    global user_cities
-    global user_resources
-    global user_cities
-    global food_count
-
-    user_garrison1 = Garrison()
-    user_resources = Resources()
-    user_cities = Cities()
-
-    user_garrison1.add_unit("Musketmen", 480)
-
-    user_resources.add_resource("Food", 1000)
-    user_resources.add_resource("Gold", 400)
-
-    total_units = user_garrison1.get_total_units()
-    musketmen_count = user_garrison1.get_unit_count("Musketmen")
-    spear_men_count = user_garrison1.get_unit_count("Spearmen")
-
-    food_count = user_resources.get_resource_count("Food")
-    gold_count = user_resources.get_resource_count("Gold")
-    
-    print(f"User food: {food_count}")
-    print(f"User garrison nr. 1: {user_garrison1}")
-    print(f"Spearmen count: {spear_men_count}")
-    print(f"Musketmen count: {musketmen_count}")
-    print(f"Total units in the garrison: {total_units}")
-
-    return gold_count
 
 def check_difficulty(difficulty):
     """Checks what difficulty game is running"""
     gold_count = 0
 
     if difficulty == 1:
-        gold_count = easy()
+        gold_count = game_init.easy()
 
     elif difficulty == 2:
-        gold_count = medium()
+        gold_count = game_init.medium()
     
     elif difficulty == 3:
-        gold_count = hard()
+        gold_count = game_init.hard()
 
     print("Starting resources set")
     return gold_count
 
 def init_user_country(value):
     country = ""
+    global user_cities
+    user_cities = game_init.user_cities
 
     if value == 1:
         country = "Sweden"
@@ -364,8 +274,10 @@ def window(difficulty, country, ruler, volume):
     global gold_count
     global user_country
     global building_capacity
+    global food_count
 
 
+    food_count = game_init.food_count
     gold_count = check_difficulty(difficulty)
     init_user_country(country)
     
@@ -395,7 +307,7 @@ def window(difficulty, country, ruler, volume):
 
     pygame.display.flip()
 
-    running = True
+    """ running = True
 
     while running:
 
@@ -417,4 +329,4 @@ def window(difficulty, country, ruler, volume):
                         running = False
 
             if event.type == pygame.QUIT:
-                running = False
+                running = False """
