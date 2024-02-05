@@ -105,6 +105,7 @@ class GameBoard():
             start_game.display_economy(resources)
             start_game.display_ruler(ruler)
             start_game.Button(300, 380, 100, 40, 'End Turn', game_init.end_turn())
+            
             for object in start_game.objects:
                 object.process()
 
@@ -116,7 +117,12 @@ class GameBoard():
 
             for event in pygame.event.get():  # User did something
                 if event.type == pygame.QUIT:  # If user clicked close
-                    done = True  # Flag that we are done so we exit this loop
+                    start_game.pygame.mixer.music.stop()
+                    start_game.pygame.mixer.music.unload()
+                    print(start_game.pygame.mixer.music.get_busy())
+                    print("q was pressed")
+                    done = True
+                    exit()
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_q:
                         start_game.pygame.mixer.music.stop()
@@ -144,7 +150,7 @@ class GameBoard():
                     print("Clicked middle button at (%d, %d)" % event.pos)
 
             # Set the screen background
-        #    screen.fill(BLACK)
+            # screen.fill(BLACK)
 
             # Limit to 60 frames per second
             clock.tick(60)

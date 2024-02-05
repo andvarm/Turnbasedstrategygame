@@ -4,6 +4,9 @@ import game_init
 import world
 import os
 from game_init import *
+import time
+
+print()
 
 """Initialize pygame"""
 pygame.init()
@@ -25,14 +28,16 @@ blue = (50, 153, 213)
 objects = []
 
 class Button():
-    def __init__(self, x, y, width, height, buttonText='button', onlclickFunction=None, onePress=False):
+    def __init__(self, x, y, width, height, buttonText='button', onclickFunction=None, onePress=True):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
-        self.onclickFunction = onlclickFunction
+        self.onclickFunction = onclickFunction
         self.onePress = onePress
         self.alreadyPressed = False
+        self.timePressed = -20
+        self.currentTime = 0
 
         self.fillColors = {
             'normal' : red,
@@ -49,25 +54,39 @@ class Button():
 
     def process(self):
         mousePos = pygame.mouse.get_pos()
+        mousePressed = pygame.mouse.get_pressed(num_buttons=3)[0]
+
+        self.buttonRect = pygame.Rect(self.x, self.y, self.width, self.height)
+
         self.buttonSurface.fill(self.fillColors['normal'])
+
         if self.buttonRect.collidepoint(mousePos):
             self.buttonSurface.fill(self.fillColors['hover'])
-            if pygame.mouse.get_pressed(num_buttons=3)[0]:
+
+            if mousePressed:
                 self.buttonSurface.fill(self.fillColors['pressed'])
-                if self.onePress:
+
+                if self.onePress and not self.alreadyPressed:
+                    print("clicked1")
                     self.onclickFunction()
-                elif not self.alreadyPressed:
-                    self.onclickFunction()
+
                     self.alreadyPressed = True
+                elif not self.onePress and not self.alreadyPressed:
+                    print(self.alreadyPressed)
+                    self.alreadyPressed = True
+                    self.onclickFunction()
 
             else:
                 self.alreadyPressed = False
 
+        else:
+            self.alreadyPressed = False
+
         self.buttonSurface.blit(self.buttonSurf, [
-        self.buttonRect.width/2 - self.buttonSurf.get_rect().width/2,
-        self.buttonRect.height/2 - self.buttonSurf.get_rect().height/2
+            self.width / 2 - self.buttonSurf.get_rect().width / 2,
+            self.height / 2 - self.buttonSurf.get_rect().height / 2
         ])
-        screen.blit(self.buttonSurface, self.buttonRect)
+        screen.blit(self.buttonSurface, (self.x, self.y))
 
 class Cities:
     def __init__(self):
@@ -86,7 +105,6 @@ class Cities:
     def get_city_count(self):
         total = 0
         for item in self.cities:
-            print(item)
             total += 1
         return total
 
@@ -297,37 +315,10 @@ def window(difficulty, country, ruler, volume):
 
     BackGround = world.GameBoard()
 
-    Button(495, 325, 100, 40, 'End Turn', game_init.end_turn())
-
     screen.fill(white)
     BackGround.main(ruler, resources, volume)
-    # screen.blit(BackGround.main(ruler, resources, volume))
     message("Press 'q' to quit", white)
     display_economy(resources)
     display_ruler(ruler)
 
     pygame.display.flip()
-
-    """ running = True
-
-    while running:
-
-        music_busy = pygame.mixer.music.get_busy()
-
-        if music_busy == False:
-            music_play(volume)
-            print("Music restarted")
-
-        pygame.display.update()
-
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_q:
-                        pygame.mixer.music.stop()
-                        pygame.mixer.music.unload()
-                        print(pygame.mixer.music.get_busy())
-                        print("q was pressed")
-                        running = False
-
-            if event.type == pygame.QUIT:
-                running = False """

@@ -140,10 +140,11 @@ def end_turn_cost():
     musketmen_count = user_garrison1.get_unit_count("musketmen")
     spearmen_count = user_garrison1.get_unit_count("spearmen")
 
-    print(f"nr of cities: {nr_of_cities}\nfood count: {food_count}\ngold_count: \
+    """ print(f"nr of cities: {nr_of_cities}\nfood count: {food_count}\ngold_count: \
         {gold_count}\nmusketmen count: {musketmen_count}\nspearmen count:\
-            {spearmen_count}")
-
+            {spearmen_count}") """
+    
+    return 22
 
 def end_turn():
     def click_action():
