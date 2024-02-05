@@ -2,6 +2,7 @@
 import pygame
 import game_init
 import world
+import os
 from game_init import *
 
 """Initialize pygame"""
@@ -253,14 +254,14 @@ def music_play(volume):
     """Music player"""
     global music_index
 
-    music_files = ["data/music/IntheHalloftheMountainKing.mp3", "data/music/Carmen_Act_1.mp3"]
+    music_files = os.listdir("data/music")
     
     music_index += 1
 
     if music_index >= len(music_files):
         music_index = 0
     
-    pygame.mixer.music.load(music_files[music_index])
+    pygame.mixer.music.load("data/music/" + music_files[music_index])
     pygame.mixer.music.set_volume(volume)
     print(f"Volume set to: {volume}")
 
@@ -277,8 +278,8 @@ def window(difficulty, country, ruler, volume):
     global food_count
 
 
-    food_count = game_init.food_count
     gold_count = check_difficulty(difficulty)
+    food_count = game_init.food_count
     init_user_country(country)
     
     user_country = game_init.check_user_country(country)
